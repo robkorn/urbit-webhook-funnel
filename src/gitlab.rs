@@ -91,7 +91,7 @@ impl GitLabParser {
 
     /// Creates a message header by parsing the json
     fn parse_message_header(j: JsonValue) -> Option<Vec<String>> {
-        let username = j["user_username"].clone();
+        let username = Self::parse_username(j.clone())?;
         let event_type = j["object_kind"].clone();
         let url = j["project"]["web_url"].clone();
         let mut header_lines = vec![];
@@ -102,6 +102,20 @@ impl GitLabParser {
         header_lines.push("---".to_string());
 
         Some(header_lines)
+    }
+
+    /// Attempts to parse the username
+    fn parse_username(j: JsonValue) -> Option<String> {
+        let username = j["user_username"].clone();
+        if !username.is_null() {
+            return Some(username.as_str()?.to_string());
+        }
+        let username = j["user"]["username"].clone();
+        if !username.is_null() {
+            return Some(username.as_str()?.to_string());
+        }
+        println!("Failed to parse username.");
+        None
     }
 
     /// Attempts to parse project avatar, else parses user avatar
