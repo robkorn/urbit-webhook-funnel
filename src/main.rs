@@ -1,7 +1,7 @@
 mod config;
+mod gitlab;
 
 use crate::config::*;
-use json::object;
 use std::str::from_utf8;
 use std::thread;
 use std::time::Duration;
@@ -10,6 +10,15 @@ use urbit_http_api::{create_new_ship_config_file, ship_interface_from_local_conf
 // use uuid::Uuid;
 use crossbeam::channel::{unbounded, Receiver, Sender};
 use sincere::App;
+
+/// Trait for Webhook Event Parsers
+pub trait EventParser {
+    /// Takes in a pushed webhook event json as a string, attempts to
+    /// parse said json, and returns a list of human readable strings to be submit
+    /// as messages to the chat which are formatted properly.
+    /// Returns `None` if input json is not supported.
+    fn parse_json(json_string: &str) -> Option<Vec<String>>;
+}
 
 fn main() {
     // Creates a local funnel config file if needed
