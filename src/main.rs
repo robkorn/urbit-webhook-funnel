@@ -2,6 +2,7 @@ mod config;
 mod gitlab;
 
 use crate::config::*;
+use gitlab::GitLabParser;
 use std::str::from_utf8;
 use std::thread;
 use std::time::Duration;
@@ -55,7 +56,16 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
 
     loop {
         if let Ok(response_json_string) = webhook_rx.try_recv() {
-            let _poke_res = (&mut channel).poke("hood", "helm-hi", &response_json_string);
+            // Attempt to parse json using `GitLabParser`
+            if let Some(messages) = GitLabParser::parse_json(&response_json_string) {
+                for mess in messages {
+                    let _poke_res = (&mut channel).poke("hood", "helm-hi", &mess);
+                }
+            // If failed to parse json, send whole json
+            } else {
+                println!("Failed parsing webhook json using available parsers. Pasting full json to chat.");
+                let _poke_res = (&mut channel).poke("hood", "helm-hi", &response_json_string);
+            }
         }
         thread::sleep(Duration::new(1, 0));
     }
@@ -79,7 +89,6 @@ pub fn webserver_logic(webhook_tx: Sender<String>) {
             .map(|t| json::parse(t))
             .unwrap()
             .unwrap();
-        println!("Json: {}", res_json.dump());
         webhook_tx.send(res_json.pretty(0)).ok();
 
         context.response.from_text("").unwrap();
