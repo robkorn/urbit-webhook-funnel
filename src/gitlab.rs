@@ -31,66 +31,66 @@ impl EventParser for GitLabParser {
 impl GitLabParser {
     /// Parses a push event from GitLab into a list of strings
     fn parse_push_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses a tag event from GitLab into a list of strings
     fn parse_tag_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses an issue event from GitLab into a list of strings
     fn parse_issue_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses a comment event from GitLab into a list of strings
     fn parse_comment_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses a merge request event from GitLab into a list of strings
     fn parse_merge_request_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses a wiki page event from GitLab into a list of strings
     fn parse_wiki_page_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses a job event from GitLab into a list of strings
     fn parse_job_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses a deployment event from GitLab into a list of strings
     fn parse_deployment_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses a feature flag event from GitLab into a list of strings
     fn parse_feature_flag_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Parses a feature flag event from GitLab into a list of strings
     fn parse_release_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j)?;
         Some(messages)
     }
 
     /// Creates a message header by parsing the json
-    fn parse_message_header(j: JsonValue) -> Option<Vec<String>> {
+    fn parse_default_message_header(j: JsonValue) -> Option<Vec<String>> {
         let username = Self::parse_username(j.clone())?;
         let event_type = j["object_kind"].clone();
         let url = j["project"]["web_url"].clone();

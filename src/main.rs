@@ -43,6 +43,7 @@ fn main() {
     ship_interaction_logic(webhook_rx)
 }
 
+// Logic for thread that communicates with Urbit Ship
 pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
     // Creates a `ShipInterace` from local config
     let ship_res = ship_interface_from_local_config();
@@ -71,6 +72,7 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
     }
 }
 
+// Logic for Webhook Web Server
 pub fn webserver_logic(webhook_tx: Sender<String>) {
     // Instantiate webserver struct
     let mut app = App::new();
