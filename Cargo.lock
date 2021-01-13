@@ -1835,9 +1835,8 @@ checksum = "f7fe0bb3479651439c9112f72b6c505038574c9fbb575ed1bf3b797fa39dd564"
 
 [[package]]
 name = "urbit-http-api"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c4476aa89d3ddaff323f00d82d69c8d3760226bacb5d3a950d6a791fa12199d"
+version = "0.1.4"
+source = "git+https://github.com/robkorn/rust-urbit-http-api?branch=main#c6c2ae5ad6d93c3ceb64a23b2c3f6c57be7ce6c9"
 dependencies = [
  "eventsource-threaded",
  "json",

@@ -1,6 +1,6 @@
 # Urbit Webhook Funnel
 
-This is a simple Rust application which funnels external webhook event data to an Urbit chat. This application is intended to be run on a server (optimally running on the same server that the Urbit ship which will be sending the messages) and will automatically handle all authentication/communicating with the ship itself.
+This is a simple Rust application which funnels external webhook event data to an Urbit chat. This application is intended to be run on a server (easiest setup is via running on the same server that the Urbit ship which will be sending the messages) and will automatically handle all authentication/communicating with the ship itself.
 
 Note: The application is still currently a WIP. The current version supports running the Urbit Webhook Funnel and parsing webhook events which hit it's endpoint, however currently the events are simply sent to be printed in your ship's dojo. Funnelling into specific chats will be added in the near future.
 
