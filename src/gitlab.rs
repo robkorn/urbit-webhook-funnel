@@ -1,6 +1,6 @@
 use crate::EventParser;
 use json;
-use json::JsonValue;
+use json::{object, JsonValue};
 
 pub struct GitLabParser {}
 
@@ -31,61 +31,89 @@ impl EventParser for GitLabParser {
 impl GitLabParser {
     /// Parses a push event from GitLab into a list of strings
     fn parse_push_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_default_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j.clone())?;
+
+        let commits = j["commits"].members();
+        for commit in commits {
+            let string = format!("    +  {}: {}", commit["id"], commit["title"]);
+            messages.push(string);
+        }
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses a tag event from GitLab into a list of strings
     fn parse_tag_event(j: JsonValue) -> Option<Vec<String>> {
         let mut messages = Self::parse_default_message_header(j)?;
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses an issue event from GitLab into a list of strings
     fn parse_issue_event(j: JsonValue) -> Option<Vec<String>> {
-        let mut messages = Self::parse_default_message_header(j)?;
+        let mut messages = Self::parse_default_message_header(j.clone())?;
+
+        let issue_title = j["object_attributes"]["title"].clone();
+        messages.push(format!("Title: {}", issue_title));
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses a comment event from GitLab into a list of strings
     fn parse_comment_event(j: JsonValue) -> Option<Vec<String>> {
         let mut messages = Self::parse_default_message_header(j)?;
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses a merge request event from GitLab into a list of strings
     fn parse_merge_request_event(j: JsonValue) -> Option<Vec<String>> {
         let mut messages = Self::parse_default_message_header(j)?;
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses a wiki page event from GitLab into a list of strings
     fn parse_wiki_page_event(j: JsonValue) -> Option<Vec<String>> {
         let mut messages = Self::parse_default_message_header(j)?;
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses a job event from GitLab into a list of strings
     fn parse_job_event(j: JsonValue) -> Option<Vec<String>> {
         let mut messages = Self::parse_default_message_header(j)?;
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses a deployment event from GitLab into a list of strings
     fn parse_deployment_event(j: JsonValue) -> Option<Vec<String>> {
         let mut messages = Self::parse_default_message_header(j)?;
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses a feature flag event from GitLab into a list of strings
     fn parse_feature_flag_event(j: JsonValue) -> Option<Vec<String>> {
         let mut messages = Self::parse_default_message_header(j)?;
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
     /// Parses a feature flag event from GitLab into a list of strings
     fn parse_release_event(j: JsonValue) -> Option<Vec<String>> {
         let mut messages = Self::parse_default_message_header(j)?;
+
+        messages.push("======".to_string());
         Some(messages)
     }
 
@@ -95,11 +123,12 @@ impl GitLabParser {
         let event_type = j["object_kind"].clone();
         let url = j["project"]["web_url"].clone();
         let mut header_lines = vec![];
-        header_lines.push(Self::parse_avatar(j)?);
-        header_lines.push(format!("User: {}", username));
-        header_lines.push(format!("Event: {}", event_type));
-        header_lines.push(format!("URL: {}", url));
-        header_lines.push("---".to_string());
+        // Avatar doesn't post as a picture
+        // header_lines.push(Self::parse_avatar(j)?);
+        header_lines.push(format!("{} -- {} -- {}  ", username, event_type, url));
+
+        // let token_1 = object! { text: format!("yha ") };
+        // let token_2 = object! { url: format!("http://google.com") };
 
         Some(header_lines)
     }
