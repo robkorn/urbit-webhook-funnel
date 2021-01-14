@@ -3,11 +3,9 @@ mod gitlab;
 
 use crate::config::*;
 use gitlab::GitLabParser;
-use json::object;
 use std::str::from_utf8;
 use std::thread;
 use std::time::Duration;
-use std::time::{SystemTime, UNIX_EPOCH};
 use urbit_http_api::{create_new_ship_config_file, ship_interface_from_local_config};
 // use uuid::Uuid;
 use crossbeam::channel::{unbounded, Receiver, Sender};
@@ -62,14 +60,19 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
             if let Some(messages) = GitLabParser::parse_json(&response_json_string) {
                 for mess in messages {
                     // let _poke_res = (&mut channel).poke("hood", "helm-hi", mess.into());
-                    let _mess_res = channel.chat().send_message("test-93", &mess);
+                    let _mess_res =
+                        channel
+                            .chat()
+                            .send_message("~mocrux-nomdep", "test-93", &mess.into());
                 }
             // If failed to parse json, send whole json
             } else {
                 println!("Failed parsing webhook json using available parsers. Pasting full json to chat.");
-                let _mess_res = channel
-                    .chat()
-                    .send_message("test-93", &response_json_string);
+                let _mess_res = channel.chat().send_message(
+                    "~mocrux-nomdep",
+                    "test-93",
+                    &response_json_string.into(),
+                );
             }
         }
         thread::sleep(Duration::new(1, 0));
@@ -102,15 +105,3 @@ pub fn webserver_logic(webhook_tx: Sender<String>) {
 
     app.run("0.0.0.0:9000", 2).unwrap();
 }
-
-//
-//
-//
-//
-//
-// Sending a message now with graph store
-// --------------------------------------
-// {"add-nodes":{"resource":{"ship":"~darrux-landes","name":"development"},"nodes":{"/170141184504858930156663499560442524598":{"post":{"author":"~hastuc-dibtux","index":"/170141184504858930156663499560442524598","time-sent":1610406805692,"contents":[{"text":"like this!"}],"hash":null,"signatures":[]},"children":null}}}}
-// with mark `graph-update`
-// the freakishly long string is the index, which (for chat) is just / followed by the current urbit time rendered as a number
-//
