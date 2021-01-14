@@ -45,6 +45,8 @@ fn main() {
 // Logic for thread that communicates with Urbit Ship
 pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
     // Creates a `ShipInterace` from local config
+    let funnel_ship_name = funnel_chat_ship_from_local_config().unwrap();
+    let funnel_chat_name = funnel_chat_name_from_local_config().unwrap();
     let ship_res = ship_interface_from_local_config();
     if let None = ship_res {
         println!("Failed to connect to Ship using information from local config.");
@@ -60,17 +62,18 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
             if let Some(messages) = GitLabParser::parse_json(&response_json_string) {
                 for mess in messages {
                     // let _poke_res = (&mut channel).poke("hood", "helm-hi", mess.into());
-                    let _mess_res =
-                        channel
-                            .chat()
-                            .send_message("~mocrux-nomdep", "test-93", &mess.into());
+                    let _mess_res = channel.chat().send_message(
+                        &funnel_ship_name,
+                        &funnel_chat_name,
+                        &mess.into(),
+                    );
                 }
             // If failed to parse json, send whole json
             } else {
                 println!("Failed parsing webhook json using available parsers. Pasting full json to chat.");
                 let _mess_res = channel.chat().send_message(
-                    "~mocrux-nomdep",
-                    "test-93",
+                    &funnel_ship_name,
+                    &funnel_chat_name,
                     &response_json_string.into(),
                 );
             }
