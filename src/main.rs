@@ -22,6 +22,12 @@ fn main() {
         std::process::exit(0);
     }
 
+    // Error checking
+    if let None = ship_interface_from_local_config() {
+        println!("Failed to connect to Ship using information from local config.");
+        std::process::exit(1);
+    }
+
     // Create a Rust channel to send messages from the webhook api thread to
     // the ship interface thread.
     let (webhook_tx, webhook_rx) = unbounded::<String>();
@@ -32,20 +38,15 @@ fn main() {
         .ok();
 
     // print!("{}[2J", 27 as char);
+
     ship_interaction_logic(webhook_rx)
 }
 
 // Logic for thread that communicates with Urbit Ship
 pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
-    // Creates a `ShipInterace` from local config
+    let ship = ship_interface_from_local_config().unwrap();
     let funnel_ship_name = funnel_chat_ship_from_local_config().unwrap();
     let funnel_chat_name = funnel_chat_name_from_local_config().unwrap();
-    let ship_res = ship_interface_from_local_config();
-    if let None = ship_res {
-        println!("Failed to connect to Ship using information from local config.");
-        std::process::exit(1);
-    }
-    let ship = ship_res.unwrap();
     // Creates a `Channel` with the Urbit Ship to communicate with it.
     let mut channel = ship.create_channel().unwrap();
 
@@ -76,16 +77,20 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
 
 // Logic for Webhook Web Server
 pub fn webserver_logic(webhook_tx: Sender<String>) {
+    let ship = ship_interface_from_local_config().unwrap();
     let funnel_port = funnel_port_from_local_config().unwrap();
+    let funnel_ship_name = funnel_chat_ship_from_local_config().unwrap();
+    let funnel_chat_name = funnel_chat_name_from_local_config().unwrap();
     // Instantiate webserver struct
     let mut app = App::new();
 
     // Root GET
-    app.get("/", |context| {
-        context
-            .response
-            .from_text("The Urbit Webhook Bot Is Live And Running.")
-            .unwrap();
+    app.get("/", move |context| {
+        let message = format!(
+            "Your Urbit Webhook Funnel Is Live And Running\n---------------------------------------------\nConnected Ship @p: ~{}\nConnected Ship URL: {}\nFunnel Webserver Port: {}\nFunneling To Chat: {}/{}",
+            ship.ship_name, ship.url,funnel_port_from_local_config().unwrap(), funnel_ship_name, funnel_chat_name,
+        );
+        context.response.from_text(&message).unwrap();
     });
 
     // Webhook POST
