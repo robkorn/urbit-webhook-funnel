@@ -1,6 +1,5 @@
 use crate::EventParser;
-use json;
-use json::{object, JsonValue};
+use json::JsonValue;
 
 pub struct GitLabParser {}
 
@@ -9,7 +8,7 @@ impl EventParser for GitLabParser {
     /// parse said json, and returns a list of human readable strings to be submit
     /// as messages to the chat which are formatted properly.
     /// Returns `None` if input json is not supported.
-    fn parse_json(json_string: &str) -> Option<Vec<String>> {
+    fn parse_json(&self, json_string: &str) -> Option<Vec<String>> {
         let j = json::parse(json_string).ok()?;
 
         match j["object_kind"].as_str()? {

@@ -1,8 +1,10 @@
 mod config;
 mod gitlab;
+mod parser;
 
-use crate::config::*;
+use config::*;
 use gitlab::GitLabParser;
+use parser::*;
 use std::str::from_utf8;
 use std::thread;
 use std::time::Duration;
@@ -10,15 +12,6 @@ use urbit_http_api::{create_new_ship_config_file, ship_interface_from_local_conf
 // use uuid::Uuid;
 use crossbeam::channel::{unbounded, Receiver, Sender};
 use sincere::App;
-
-/// Trait for Webhook Event Parsers
-pub trait EventParser {
-    /// Takes in a pushed webhook event json as a string, attempts to
-    /// parse said json, and returns a list of human readable strings to be submit
-    /// as messages to the chat which are formatted properly.
-    /// Returns `None` if input json is not supported.
-    fn parse_json(json_string: &str) -> Option<Vec<String>>;
-}
 
 fn main() {
     // Creates a local funnel config file if needed
@@ -58,17 +51,16 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
 
     loop {
         if let Ok(response_json_string) = webhook_rx.try_recv() {
-            // Attempt to parse json using `GitLabParser`
-            if let Some(messages) = GitLabParser::parse_json(&response_json_string) {
+            // Attempt to parse json using every implemented parser
+            if let Some(messages) = parse_json_using_any_parser(&response_json_string) {
                 for mess in messages {
-                    // let _poke_res = (&mut channel).poke("hood", "helm-hi", mess.into());
                     let _mess_res = channel.chat().send_message(
                         &funnel_ship_name,
                         &funnel_chat_name,
                         &mess.into(),
                     );
                 }
-            // If failed to parse json, send whole json
+            // If failed to parse json using all parsers, send whole json
             } else {
                 println!("Failed parsing webhook json using available parsers. Pasting full json to chat.");
                 let _mess_res = channel.chat().send_message(
