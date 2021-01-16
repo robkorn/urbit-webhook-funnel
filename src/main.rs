@@ -76,6 +76,7 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
 
 // Logic for Webhook Web Server
 pub fn webserver_logic(webhook_tx: Sender<String>) {
+    let funnel_port = funnel_port_from_local_config().unwrap();
     // Instantiate webserver struct
     let mut app = App::new();
 
@@ -98,5 +99,5 @@ pub fn webserver_logic(webhook_tx: Sender<String>) {
         context.response.from_text("").unwrap();
     });
 
-    app.run("0.0.0.0:9000", 2).unwrap();
+    app.run(&format!("0.0.0.0:{}", funnel_port), 2).unwrap();
 }

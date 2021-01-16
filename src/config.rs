@@ -9,6 +9,8 @@ static BAREBONES_FUNNEL_CONFIG_YAML: &str = r#"
 chat_ship: "~zod"
 # Name of the chat
 chat_name: "..."
+# The port that the funnel webserver (the /webhook endpoint) will be using
+funnel_port: "9000"
 "#;
 
 /// Attempts to create a new `funnel_config.yaml` with the barebones yaml inside.
@@ -30,14 +32,20 @@ fn funnel_ship_name_from_yaml(config: Yaml) -> Option<String> {
     Some(format!("{}", ship))
 }
 
-/// Based on the provided input config yaml, build the chat path `String`
+/// Based on the provided input config yaml, build the chat name `String`
 fn funnel_chat_name_from_yaml(config: Yaml) -> Option<String> {
     let name = config["chat_name"].as_str()?;
     Some(format!("{}", name))
 }
 
+/// Based on the provided input config yaml, acquire the funnel port
+fn funnel_port_from_yaml(config: Yaml) -> Option<String> {
+    let name = config["funnel_port"].as_str()?;
+    Some(format!("{}", name))
+}
+
 /// Opens a local `ship_config.yaml` file and uses the
-/// data inside to build the chat name
+/// data inside to find the chat name
 pub fn funnel_chat_name_from_local_config() -> Option<String> {
     let yaml_str = std::fs::read_to_string("funnel_config.yaml").ok()?;
     let yaml = YamlLoader::load_from_str(&yaml_str).unwrap()[0].clone();
@@ -45,9 +53,17 @@ pub fn funnel_chat_name_from_local_config() -> Option<String> {
 }
 
 /// Opens a local `ship_config.yaml` file and uses the
-/// data inside to build the chat name
+/// data to find the chat ship
 pub fn funnel_chat_ship_from_local_config() -> Option<String> {
     let yaml_str = std::fs::read_to_string("funnel_config.yaml").ok()?;
     let yaml = YamlLoader::load_from_str(&yaml_str).unwrap()[0].clone();
     funnel_ship_name_from_yaml(yaml)
+}
+
+/// Opens a local `ship_config.yaml` file and uses the
+/// data inside to acquire the funnel port
+pub fn funnel_port_from_local_config() -> Option<String> {
+    let yaml_str = std::fs::read_to_string("funnel_config.yaml").ok()?;
+    let yaml = YamlLoader::load_from_str(&yaml_str).unwrap()[0].clone();
+    funnel_port_from_yaml(yaml)
 }
