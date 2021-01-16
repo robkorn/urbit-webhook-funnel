@@ -18,7 +18,7 @@ sh setup.rs
 
 4. Edit `ship_config.yaml` with your Urbit ships ip/port/`+code`.
 
-5. Edit `funnel_config` with the path (chat owner @p + chat name) to the chat which you wish to funnel Webhook events to.
+5. Edit `funnel_config.yaml` with the port that you wish for the webserver to run on, and the chat owner @p/chat name which you wish to funnel Webhook events to.
 
 6. Run the application:
 
@@ -32,9 +32,9 @@ sh setup.rs
 http://ip:port/webhook
 ```
 
-Having the ability to choose which port a funnel is run on opens up the potential for running multiple funnels at the same time on the same server, but each one pointed at a different chat and targeted by a different service. Whichever ports you choose. please ensure that they are open or else the webhook events wont be able to reach your funnel.
+Having the ability to choose which port a funnel uses enables for running multiple funnels at the same time on the same server, but each one pointed at a different chat and targeted by a different service. Whichever ports you choose. please ensure that they are open or else the webhook events wont be able to reach your funnel.
 
-You can visit `http://ip:port` while your funnel is running, and you will be greeted with a basic text page that provides you with instructive information about your said given funnel (can be helpful when running multiple funnels):
+You can visit `http://ip:port` while your funnel is running, and you will be greeted with a basic text page that provides you with instructive information about your given funnel (can be helpful when running multiple funnels):
 
 ![](https://i.imgur.com/3VUn0xd.png)
 
