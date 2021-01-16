@@ -32,7 +32,9 @@ sh setup.rs
 http://ip:port/webhook
 ```
 
-Ensure that the port you chose is open. You can visit `http://ip:port` while the Urbit Webhook Funnel is running, and you will be greeted by boilerplate text that verifies your port is open and the application is working.
+Having the ability to choose which port a funnel is run on opens up the potential for running multiple funnels at the same time on the same server, but each one pointed at a different chat and targeted by a different service. Whichever ports you choose. please ensure that they are open or else the webhook events wont be able to reach your funnel.
+
+You can visit `http://ip:port` while your funnel is running, and you will be greeted by boilerplate text that verifies your port is open and the application is working.
 
 ## Parsers
 
