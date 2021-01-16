@@ -11,12 +11,12 @@ Ensure that you have the [latest version of Rust installed](https://rustup.rs/) 
 2. Run the setup script which will compile and prepare everything for you.
 
 ```sh
-sh setup.rs
+sh setup.sh
 ```
 
 3. The Urbit Webhook Funnel application will be compiled, moved into the `deployed` folder, and two config files will be generated automatically for you.
 
-4. Edit `ship_config.yaml` with your Urbit ships ip/port/`+code`.
+4. Edit `ship_config.yaml` with your Urbit ship's ip/port/`+code`.
 
 5. Edit `funnel_config.yaml` with the port that you wish for the webserver to run on, and the chat owner @p/chat name which you wish to funnel Webhook events to.
 
@@ -26,13 +26,13 @@ sh setup.rs
 ./urbit-webhook-funnel
 ```
 
-7. The application will start and the webhook webserver will be on the port specified in the `funnel_config.yaml` configured to listen to webhook events on the `/webhook` endpoint. Thus in your webhook emitting application/platform, the address you provide will look like:
+7. The application will start and the webhook webserver will be on the port specified in the `funnel_config.yaml` configured to listen to webhook events on the `/webhook` endpoint. Thus, in your webhook emitting application/platform, the address you provide will look like:
 
 ```html
 http://ip:port/webhook
 ```
 
-Having the ability to choose which port a funnel uses enables for running multiple funnels at the same time on the same server, but each one pointed at a different chat and targeted by a different service. Whichever ports you choose. please ensure that they are open or else the webhook events wont be able to reach your funnel.
+Having the ability to choose which port a funnel uses enables for running multiple funnels at the same time on the same server, but each one pointed at a different chat and targeted by a different service. Whichever ports you choose. Please ensure that they are open or else the webhook events won't be able to reach your funnel.
 
 You can visit `http://ip:port` while your funnel is running, and you will be greeted with a basic text page that provides you with instructive information about your given funnel (can be helpful when running multiple funnels):
 
@@ -40,7 +40,7 @@ You can visit `http://ip:port` while your funnel is running, and you will be gre
 
 ## Parsers
 
-The Urbit Webhook Funnel attempts to parse any data that is sent to its webhook endpoint using all of the `EventParser`s that are currently implemented. If any one of them successfully parses the input json, then the event message will be posted using said predefined formatting (aka. make it look pretty). If none of the parsers succeed, then the body of the message is posted in it's entirety (usually ugly).
+The Urbit Webhook Funnel attempts to parse any data that is sent to its webhook endpoint using all of the `EventParser`s that are currently implemented. If any one of them successfully parses the input json, then the event message will be posted using said predefined formatting (aka. make it look pretty). If none of the parsers succeed, then the body of the message is posted in its entirety (usually ugly).
 
 Currently implemented parsers:
 
