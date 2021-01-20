@@ -52,10 +52,10 @@ If you have a use case that requires a different parser, implementing one yourse
 /// Trait for Webhook Event Parsers
 pub trait EventParser {
     /// Takes in a pushed webhook event json as a string, attempts to
-    /// parse said json, and returns a list of human readable strings to be submit
-    /// as messages to the chat which are formatted properly.
+    /// parse said json, and returns a list of Urbit chat `Message`s to be submit
+    /// to the chat as properly formatted/processed messages.
     /// Returns `None` if input json is not supported.
-    fn parse_json(&self, json_string: &str) -> Option<Vec<String>>;
+    fn parse_json(&self, json_string: &str) -> Option<Vec<Message>>;
 }
 ```
 
