@@ -1,7 +1,6 @@
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
-use urbit_http_api::ShipInterface;
 use yaml_rust::{Yaml, YamlLoader};
 
 static BAREBONES_FUNNEL_CONFIG_YAML: &str = r#"

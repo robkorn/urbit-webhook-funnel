@@ -9,8 +9,8 @@ edition = "2018"
 [dependencies]
 json                        = "0.12.4"
 sincere                     = "0.6.6"
-# urbit-http-api              = "0.1.5"
-urbit-http-api              = {git = "https://github.com/robkorn/rust-urbit-http-api", branch = "main"}
+urbit-http-api              = "0.1.7"
+# urbit-http-api              = {git = "https://github.com/robkorn/rust-urbit-http-api", branch = "main"}
 openssl                     = { version = "0.10", features = ["vendored"] }
 yaml-rust                   = "0.4.5"
 crossbeam                   = "0.8.0"

@@ -51,16 +51,6 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
     // Creates a `Channel` with the Urbit Ship to communicate with it.
     let mut channel = ship.create_channel().unwrap();
 
-    // let message = Message::new()
-    //     .add_text("Yo: ")
-    //     .add_url("https://urbit.live")
-    //     .add_url("https://i.imgur.com/f1aUe3f.jpg")
-    // let _mess_res = channel
-    //     .chat()
-    //     .send_message("~mocrux-nomdep", "test-93", &message);
-
-    // std::process::exit(0);
-
     loop {
         if let Ok(response_json_string) = webhook_rx.try_recv() {
             // Attempt to parse json using every implemented parser
