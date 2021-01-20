@@ -8,6 +8,7 @@ use parser::*;
 use std::str::from_utf8;
 use std::thread;
 use std::time::Duration;
+use urbit_http_api::chat::Message;
 use urbit_http_api::{create_new_ship_config_file, ship_interface_from_local_config};
 // use uuid::Uuid;
 use crossbeam::channel::{unbounded, Receiver, Sender};
@@ -50,6 +51,16 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
     // Creates a `Channel` with the Urbit Ship to communicate with it.
     let mut channel = ship.create_channel().unwrap();
 
+    // let message = Message::new()
+    //     .add_text("Yo: ")
+    //     .add_url("https://urbit.live")
+    //     .add_url("https://i.imgur.com/f1aUe3f.jpg")
+    // let _mess_res = channel
+    //     .chat()
+    //     .send_message("~mocrux-nomdep", "test-93", &message);
+
+    // std::process::exit(0);
+
     loop {
         if let Ok(response_json_string) = webhook_rx.try_recv() {
             // Attempt to parse json using every implemented parser
@@ -67,7 +78,7 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
                 let _mess_res = channel.chat().send_message(
                     &funnel_ship_name,
                     &funnel_chat_name,
-                    &response_json_string.into(),
+                    &Message::new().add_text(&response_json_string),
                 );
             }
         }
