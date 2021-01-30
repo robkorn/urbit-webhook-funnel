@@ -38,8 +38,6 @@ fn main() {
         .spawn(|| webserver_logic(webhook_tx))
         .ok();
 
-    // print!("{}[2J", 27 as char);
-
     ship_interaction_logic(webhook_rx)
 }
 
