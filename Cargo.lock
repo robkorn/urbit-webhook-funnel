@@ -2049,11 +2049,12 @@ checksum = "f7fe0bb3479651439c9112f72b6c505038574c9fbb575ed1bf3b797fa39dd564"
 
 [[package]]
 name = "urbit-http-api"
-version = "0.2.1"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71fa160d728a0c48b7f8548bbd5e96f91933d5fd4ed5a0549b63ae8d2d614596"
+checksum = "eadf3bdabc01db75336eb567a79848e11ca759a943513999c061dec52ceda5c2"
 dependencies = [
  "chrono",
+ "crossbeam",
  "eventsource-threaded",
  "json",
  "rand 0.8.3",
@@ -2065,7 +2066,7 @@ dependencies = [
 
 [[package]]
 name = "urbit-webhook-funnel"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "crossbeam",
  "json",

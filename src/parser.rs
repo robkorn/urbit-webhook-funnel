@@ -1,5 +1,5 @@
 use crate::GitLabParser;
-use urbit_http_api::chat::Message;
+use urbit_http_api::Message;
 
 const ALL_PARSERS: [&dyn EventParser; 1] = [&GitLabParser {}];
 

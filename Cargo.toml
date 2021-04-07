@@ -1,6 +1,6 @@
 [package]
 name = "urbit-webhook-funnel"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Robert Kornacki <11645932+robkorn@users.noreply.github.com>"]
 edition = "2018"
 
@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 json                        = "0.12.4"
 sincere                     = "0.6.6"
-urbit-http-api              = "0.2.1"
+urbit-http-api              = "0.7.0"
 # urbit-http-api              = {git = "https://github.com/robkorn/rust-urbit-http-api", branch = "main"}
 openssl                     = { version = "0.10", features = ["vendored"] }
 yaml-rust                   = "0.4.5"

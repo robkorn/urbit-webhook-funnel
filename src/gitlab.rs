@@ -1,6 +1,6 @@
 use crate::EventParser;
 use json::JsonValue;
-use urbit_http_api::chat::Message;
+use urbit_http_api::Message;
 
 pub struct GitLabParser {}
 

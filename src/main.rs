@@ -8,7 +8,7 @@ use parser::*;
 use std::str::from_utf8;
 use std::thread;
 use std::time::Duration;
-use urbit_http_api::chat::Message;
+use urbit_http_api::Message;
 use urbit_http_api::{create_new_ship_config_file, ship_interface_from_local_config};
 // use uuid::Uuid;
 use crossbeam::channel::{unbounded, Receiver, Sender};
@@ -54,7 +54,7 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
             // Attempt to parse json using every implemented parser
             if let Some(messages) = parse_json_using_any_parser(&response_json_string) {
                 for mess in messages {
-                    let _mess_res = channel.chat().send_message(
+                    let _mess_res = channel.chat().send_chat_message(
                         &funnel_ship_name,
                         &funnel_chat_name,
                         &mess.into(),
@@ -63,7 +63,7 @@ pub fn ship_interaction_logic(webhook_rx: Receiver<String>) {
             // If failed to parse json using all parsers, send whole json
             } else {
                 println!("Failed parsing webhook json using available parsers. Pasting full json to chat.");
-                let _mess_res = channel.chat().send_message(
+                let _mess_res = channel.chat().send_chat_message(
                     &funnel_ship_name,
                     &funnel_chat_name,
                     &Message::new().add_text(&response_json_string),
