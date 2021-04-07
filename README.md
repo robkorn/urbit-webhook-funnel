@@ -2,6 +2,8 @@
 
 This is a simple Rust application which funnels external webhook event data to an Urbit chat. This application is intended to be run on a server (easiest setup is via running on the same server that the Urbit ship which will be sending the messages) and will automatically handle all authentication/communicating with the ship itself.
 
+[![awesome urbit badge](https://img.shields.io/badge/~-awesome%20urbit-lightgrey)](https://github.com/urbit/awesome-urbit)
+
 ## Setup
 
 Ensure that you have the [latest version of Rust installed](https://rustup.rs/) and the `libssl-dev` package on Ubuntu (aka `openssl-devel` on Fedora, and potentially slightly different on other distros).
